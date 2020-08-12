@@ -1,0 +1,62 @@
+server.port: 8080
+server.error.include-stacktrace: never
+server.servlet:
+  context-path: /counter-api
+  compression:
+    enabled: true
+    mime-types: application/json,application/error+json
+  tomcat:
+    max-threads: 40
+    accesslog:
+    enabled: true
+    prefix: access
+    rename-on-rotate: true
+    suffix: .log
+    pattern: '{
+               "src_ip":"%a",
+               "thread_name":"%I",
+               "timestamp":"%t",
+               "http_method":"%m",
+               "uri":"%U",
+               "protocol":"%H",
+               "status":"%s",
+               "response_bytes":"%b",
+               "response_time":"%D",
+               "user_agent":"%{User-Agent}i",
+               "accept":"%{Accept}i",
+               "user_ip":"%{X-Forwarded-For}i",
+               "referer":"%{Referer}i"
+             }'
+
+---
+spring:
+  profiles:
+    active: local
+  jackson:
+    default-property-inclusion: NON_NULL
+    deserialization:
+      FAIL_ON_UNKNOWN_PROPERTIES: false
+server:
+  tomcat:
+    basedir: .
+    accesslog:
+      directory: logs
+---
+spring.profiles: local
+
+---
+swagger:
+  host: "localhost"
+  protocols: http
+  api_title: Counter API
+  api_description: Api Documentation for Counter API
+  api_version: v1
+  terms_of_service_url: 
+  name_key: name
+  email_key: email
+  business_owner_name: Amit Kumar
+  business_owner_email: kamit28@gmail.com
+  technical_owner_name: Amit Kumar
+  technical_owner_email: kamit28@gmail.com
+  license: Apache 2.0
+  license_url: http://www.apache.org/licenses/LICENSE-2.0
